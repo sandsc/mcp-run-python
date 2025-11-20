@@ -14,10 +14,8 @@ from typing import Literal, ParamSpec, TypeVar, cast
 __all__ = "run_mcp_server", "DenoEnv", "prepare_deno_env", "async_prepare_deno_env"
 
 logger = logging.getLogger(__name__)
-LoggingLevel = Literal[
-    "debug", "info", "notice", "warning", "error", "critical", "alert", "emergency"
-]
-Mode = Literal["stdio", "streamable_http", "example"]
+LoggingLevel = Literal['debug', 'info', 'notice', 'warning', 'error', 'critical', 'alert', 'emergency']
+Mode = Literal['stdio', 'streamable_http', 'streamable_http_stateless', 'example']
 LogHandler = Callable[[LoggingLevel, str], None]
 
 
@@ -37,6 +35,7 @@ def run_mcp_server(
     Args:
         mode: The mode to run the server in.
         http_port: The port to run the server on if mode is `streamable_http`.
+        http_host: The host to run the server on if mode is `streamable_http`.
         dependencies: The dependencies to install.
         return_mode: The mode to return tool results in.
         deps_log_handler: Optional function to receive logs emitted while installing dependencies.
@@ -86,7 +85,7 @@ def prepare_deno_env(
     http_port: int | None = None,
     http_host: str | None = None,
     dependencies: list[str] | None = None,
-    return_mode: Literal["json", "xml"] = "xml",
+    return_mode: Literal['json', 'xml'] = 'xml',
     deps_log_handler: LogHandler | None = None,
     allow_networking: bool = True,
 ) -> Iterator[DenoEnv]:
@@ -99,6 +98,7 @@ def prepare_deno_env(
     Args:
         mode: The mode to run the server in.
         http_port: The port to run the server on if mode is `streamable_http`.
+        http_host: The host to run the server on if mode is `streamable_http`.
         dependencies: The dependencies to install.
         return_mode: The mode to return tool results in.
         deps_log_handler: Optional function to receive logs emitted while installing dependencies.
@@ -155,7 +155,7 @@ async def async_prepare_deno_env(
     http_port: int | None = None,
     http_host: str | None = None,
     dependencies: list[str] | None = None,
-    return_mode: Literal["json", "xml"] = "xml",
+    return_mode: Literal['json', 'xml'] = 'xml',
     deps_log_handler: LogHandler | None = None,
     allow_networking: bool = True,
 ) -> AsyncIterator[DenoEnv]:
@@ -197,7 +197,7 @@ def _deno_run_args(
     http_port: int | None = None,
     http_host: str | None = None,
     dependencies: list[str] | None = None,
-    return_mode: Literal["json", "xml"] = "xml",
+    return_mode: Literal['json', 'xml'] = 'xml',
     allow_networking: bool = True,
 ) -> list[str]:
     args = ["run"]
@@ -227,6 +227,4 @@ T = TypeVar("T")
 
 
 async def _asyncify(func: Callable[P, T], *args: P.args, **kwargs: P.kwargs) -> T:
-    return await asyncio.get_event_loop().run_in_executor(
-        None, partial(func, *args, **kwargs)
-    )
+    return await asyncio.get_event_loop().run_in_executor(None, partial(func, *args, **kwargs))
