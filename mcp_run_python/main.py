@@ -56,8 +56,8 @@ def run_mcp_server(
         deps_log_handler=deps_log_handler,
         allow_networking=allow_networking,
     ) as env:
-        if mode == "streamable_http":
-            logger.info("Running mcp-run-python via %s on port %d...", mode, http_port)
+        if mode in ('streamable_http', 'streamable_http_stateless'):
+            logger.info('Running mcp-run-python via %s on port %d...', mode, http_port)
         else:
             logger.info("Running mcp-run-python via %s...", mode)
 
@@ -212,7 +212,7 @@ def _deno_run_args(
     ]
     if dependencies is not None:
         args.append(f'--deps={",".join(dependencies)}')
-    if mode == "streamable_http":
+    if mode in ('streamable_http', 'streamable_http_stateless'):
         if http_port is not None:
             args.append(f"--port={http_port}")
         if http_host is not None:
