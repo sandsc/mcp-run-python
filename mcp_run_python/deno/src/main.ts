@@ -204,7 +204,7 @@ function httpSetJsonResponse(
  */
 function runStreamableHttp(port: number, host: string, deps: string[], returnMode: string, stateless: boolean): void {
   const server = (stateless ? createStatelessHttpServer : createStatefulHttpServer)(deps, returnMode)
-  server.listen(port, host，() => {
+  server.listen(port, host, () => {
     console.log(`Listening on host ${host} port ${port}`)
   })
 }
