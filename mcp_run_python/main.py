@@ -128,7 +128,9 @@ def prepare_deno_env(
                 stdout.append(line)
         p.wait()
         if p.returncode != 0:
-            raise RuntimeError(f'`deno run ...` returned a non-zero exit code {p.returncode}: {"".join(stdout)}')
+            raise RuntimeError(
+                f'`deno run ...` returned a non-zero exit code {p.returncode}: {"".join(stdout)}'
+            )
 
         args = _deno_run_args(
             mode,
